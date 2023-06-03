@@ -1,0 +1,4 @@
+sudo g++ ./src/main.cpp ./src/taskwork.cpp ./src/data_switch.cpp ./src/redis_adapter.cpp ./src/itwconfig.cpp -std=gnu++98 -Wall -o main -I/usr/local/include -I../sc-common/include -I./include/ -L/usr/local/lib -L../sc-common/Release -lzmq -lhiredis -lpthread -lmycommon -lcurl
+sudo g++ ./test/testvent.cpp ./src/itwconfig.cpp -std=gnu++98 -Wall -o testvent -I/usr/local/include -I../sc-common/include -I./include/ -L/usr/local/lib -L../sc-common/Release -lzmq -lpthread -lmycommon
+sudo g++ ./test/testsink.cpp ./src/itwconfig.cpp -std=gnu++98 -Wall -o testsink -I/usr/local/include -I../sc-common/include -I./include/ -L/usr/local/lib -L../sc-common/Release -lzmq -lpthread -lmycommon
+sudo chmod 777 ./testvent ./main ./testsink
