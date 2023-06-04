@@ -1,0 +1,10 @@
+Sun Jun  4 07:57:36 2023   INFO [REDIS_ZMQ] src/itwconfig.cpp:150:895856384 configer file path is [/home/limd/work/gitHub/share/redisMQ/conf/redis_mq.conf]
+Sun Jun  4 07:57:36 2023  DEBUG [REDIS_ZMQ] src/data_switch.cpp:11:895856384 DataSwitch::DataSwitch()
+Sun Jun  4 07:57:36 2023  DEBUG [REDIS_ZMQ] src/data_switch.cpp:26:895856384 DataSwitch::init()
+Sun Jun  4 07:57:36 2023  DEBUG [REDIS_ZMQ] src/data_switch.cpp:240:895856384 fetch_Data()
+Sun Jun  4 07:57:36 2023  DEBUG [REDIS_ZMQ] src/data_switch.cpp:264:895856384 push_Data()
+Sun Jun  4 07:57:36 2023  DEBUG [REDIS_ZMQ] src/data_switch.cpp:86:895856384 fetch_thread()
+Sun Jun  4 07:57:36 2023  DEBUG [REDIS_ZMQ] src/data_switch.cpp:164:741287680 push_thread()
+Sun Jun  4 07:57:36 2023  DEBUG [REDIS_ZMQ] src/taskwork.cpp:139:895856384 create_publish_process() 
+Sun Jun  4 07:57:36 2023  DEBUG [REDIS_ZMQ] src/data_switch.cpp:164:749680384 push_thread()
+Sun Jun  4 07:57:36 2023  DEBUG [REDIS_ZMQ] src/data_switch.cpp:94:758073088 fetch_thread()

@@ -1,0 +1,25 @@
+/*
+ * dbpool.h
+ *
+ *  Created on: 2012-2-22
+ *      Author: shan
+ */
+/* $Id: dbpool.h,v 1.4 2012/07/04 02:52:01 jlshan Exp $ */
+#ifndef __DBPOOL_H__
+#define __DBPOOL_H__
+
+#include "mycommon.h"
+#include "eccdb.h"
+
+//连接池初始化函数,db_type 有"MySQL"
+bool initDBPool(int pool_size,string db_hostname,string db_port,string db_username,string db_password,string db_name,string db_dbtype);
+//删除连接池
+void deleteDBPool();
+//获取一个ECCDB数据库连接对象
+ECCDB *getECCDB();
+//释放一个ECCDB数据库连接对象
+void releaseECCDB(ECCDB *eccDB);
+
+#endif
+
+

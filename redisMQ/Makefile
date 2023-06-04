@@ -7,10 +7,12 @@ VERSION=\"1.0.0\"
 CXXFLAGS=-g -O0 -w -Wall -std=gnu++98 -D_DEBUG -DVERSION="$(VERSION)"
 
 INCLUDES = -I /usr/local/include         \
-           -I ../sc-common/include       \
-		   -I ./include
+           -I ./sc-common/include        \
+		   -I ./include                  \
+		   -I ./libzmq-master/include   \
+		   -I ./libevent-2.1.12-stable/include
 
-LIBS += -L/usr/local/lib -L../sc-common/Release
+LIBS += -L/usr/local/lib -L../sc-common/Release -L/home/limd/work/gitHub/share/redisMQ/libzmq-master/build/lib -L/home/limd/work/gitHub/share/redisMQ/sc-common/Release
 LDLIBS += -lzmq -lpthread -lmycommon
 
 SRCS_1 := $(wildcard ./test/testsink.cpp ./src/itwconfig.cpp)

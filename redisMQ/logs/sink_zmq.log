@@ -1,0 +1,2 @@
+Sun Jun  4 07:57:59 2023   INFO [SINK] src/itwconfig.cpp:150:-2113607872 configer file path is [/home/limd/work/gitHub/share/redisMQ/conf/redis_mq.conf]
+Sun Jun  4 07:57:59 2023 NOTICE [SINK] test/testsink.cpp:153:-2113607872 before receive message

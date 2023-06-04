@@ -1,0 +1,39 @@
+/*
+ providing support for accessing  MySQL Databases.
+ @Author Shan Jinlai
+ @Date 03/06/2008
+
+ */
+#ifndef _MYSQLI_H
+#define _MYSQLI_H
+
+#include "eccdb.h"
+
+class MYSQLResultSet:public ECCResultSet{
+public:
+	MYSQLResultSet(MYSQL_RES* mysql_res);
+};
+
+class MYSQLI: public DBI {
+	string hostname;
+	unsigned short port;
+	string username;
+	string password;
+	string dbname;
+	MYSQL *mysql;
+	ECCResultSet *eccResultSet;
+public:
+	int EXEC_UPDATE(string sqlstr);
+	ECCResultSet *EXEC_SELECT(string sqlstr);
+	void ReConnect();
+	void freeResultSet();
+	bool setAutoCommit(bool autoCommit);
+	MYSQLI(string _hostname, unsigned short _port, string _username,
+			string _password, string _dbname);
+	virtual ~MYSQLI();
+	bool commit();
+	bool rollback();
+
+};
+
+#endif

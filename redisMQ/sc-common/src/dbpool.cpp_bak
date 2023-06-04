@@ -1,0 +1,142 @@
+/*
+ * dbpool.cpp
+ *
+ *  Created on: 2012-2-22
+ *      Author: shan
+ */
+#include <iostream>
+#include <string>
+#include <stdio.h>
+#include <pthread.h>
+#include "eccdb.h"
+#include "dbpool.h"
+#include "logging.h"
+
+
+//数据库连接参数
+string db_hostname, db_port, db_username, db_password, db_name, db_type;
+
+//连接池操作互斥变量
+pthread_mutex_t db_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+//数据库连接池指针
+ECCDB **dbPool = NULL;
+int pool_size = 0; //当前连接池大小
+int* dbpoolFlags = NULL; //数据库连接池连接状态指针
+int db_conn_count = 0; //总的数据库连接池创建的数据库连接数量
+
+/*
+ * 初始化连接池
+ *  
+ * @param pool_size 连接池大小
+ * @param db_hostname 数据库服务器IP地址
+ * @param db_port     服务端口
+ * @param db_username 用户名
+ * @param db_password 口令
+ * @param db_name     数据库名称
+ * @param db_dbtype   数据库类型
+ * @return true 初始化成功
+ *         faslse 失败
+ */
+bool initDBPool(int poolSize, string dbHostname, string dbPort,
+		string dbUsername, string dbPassword, string dbName,
+		string dbType) {
+
+		pool_size = poolSize;
+		db_hostname = dbHostname;
+		db_port = dbPort;
+		db_username = dbUsername;
+		db_password = dbPassword;
+		db_name = dbName;
+		db_type = dbType;
+	try {
+
+		dbPool = new ECCDB*[pool_size];
+		dbpoolFlags = new int[pool_size];
+		for (int i = 0; i < pool_size; i++) {
+			dbPool[i] = new ECCDB(db_hostname, atoi(db_port.c_str()),
+					db_username, db_password, db_name, db_type);
+			dbpoolFlags[i] = 0;
+		}
+
+	} catch (ECCDBException& dbException) {
+		FATAL((char*)dbException.getExceptionMessage().c_str());
+		return  false;
+	}
+	db_conn_count = pool_size;
+	return true;
+}
+
+/*
+ * 删除连接池
+ *
+ */
+void deleteDBPool()
+{
+	for (int i = 0; i < pool_size; i++) {
+		delete dbPool[i];
+		dbPool[i] = NULL;
+	}
+
+	delete[] dbPool;
+	delete[] dbpoolFlags;
+}
+/*
+ * 获取ECCDB对象
+ *  从缓冲池中找到未用的DB连接对象，如果没有则新建一个
+ * @param data 状态结构指针
+ * @return ECCDB对象指针,or
+ *         NULL  无法新建ECCDB对象
+ */
+ECCDB *getECCDB() {
+	pthread_mutex_lock(&db_mutex);
+
+	for (int i = 0; i < pool_size; i++) {
+		if (dbpoolFlags[i] == 0) {
+			dbpoolFlags[i] = 1;
+			//DEBUG("Get ECCDB[%d]",i);
+			pthread_mutex_unlock(&db_mutex);
+			return dbPool[i];
+		}
+	}
+
+	ECCDB *eccDB = NULL;
+	try {
+		eccDB = new ECCDB(db_hostname, atoi(db_port.c_str()), db_username,
+				db_password, db_name, db_type);
+		//DEBUG("new ECCDB ");
+	} catch (ECCDBException& dbException) {
+		ERROR((char*)dbException.getExceptionMessage().c_str());
+		pthread_mutex_unlock(&db_mutex);
+		return NULL;
+	}
+	db_conn_count++;
+	WARN(
+			"Database pool used up,create a additionally one.total %d db connections",
+			db_conn_count);
+	pthread_mutex_unlock(&db_mutex);
+	return eccDB;
+}
+
+/*
+ * 获取ECCDB对象
+ *  将ECCDB返还连接池，如果是新建的则释放该对象
+ * @param eccDB 数据库连接对象
+ */
+void releaseECCDB(ECCDB *eccDB) {
+	pthread_mutex_lock(&db_mutex);
+
+	for (int i = 0; i < pool_size; i++) {
+		if (dbPool[i] == eccDB) {
+			dbpoolFlags[i] = 0;
+			//DEBUG("Release ECCDB[%d]",i);
+			pthread_mutex_unlock(&db_mutex);
+			return;
+		}
+	}
+
+	delete eccDB;
+	db_conn_count--;
+	INFO("release additionally created db connection");
+	pthread_mutex_unlock(&db_mutex);
+}

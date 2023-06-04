@@ -1,0 +1,320 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <semaphore.h>
+#include <queue>
+#include <mysql/mysql.h>
+
+#include "logging.h"
+#include "eccdb.h"
+#include "mysqli.h"
+
+
+const string NULL_VALUE = "(NULL)";
+
+void *_asyncProcess(void *lpCmdLine)
+{
+	((ECCDB *) lpCmdLine)->asyncProcess(NULL);
+	return 0;
+}
+
+int ECCResultSet::nameToIndex(string field_name) {
+	for (int i = 0; i < field_count; i++)
+		if (fields[i] == field_name)
+			return i;
+
+	return -1;
+}
+
+string ECCResultSet::stringToUpper(string str) {
+	char* buff = new char[str.length()];
+
+	memset(buff, 0, sizeof(buff));
+	for (int i = 0; i < str.length(); i++)
+		buff[i] = toupper(str.at(i));
+
+	string ret(buff);
+	delete [] buff;
+	return ret;
+}
+int ECCResultSet::getIntValue(int field_index) {
+	if (cursor >= 0 && cursor < row_count && field_index < field_count) {
+		int iv = 0;
+
+		if (rows[cursor][field_index].compare(NULL_VALUE) == 0)
+			return 0;
+		iv = atoi(rows[cursor][field_index].c_str());
+		return iv;
+	} else {
+			throw ECCDBException(exceptionMessage(field_index));
+	}
+	return 0;
+}
+int ECCResultSet::getIntValue(string field_name) {
+	return getIntValue(nameToIndex(field_name));
+}
+
+float ECCResultSet::getFloatValue(int field_index) {
+	if (cursor >= 0 && cursor < row_count && field_index < field_count) {
+		float fv = 0.0f;
+		if (rows[cursor][field_index].compare(NULL_VALUE) == 0)
+			return 0.0f;
+		fv = atof(rows[cursor][field_index].c_str());
+		return fv;
+	} else {
+		throw ECCDBException(exceptionMessage(field_index));
+	}
+}
+
+float ECCResultSet::getFloatValue(string field_name) {
+	return getFloatValue(nameToIndex(field_name));
+}
+
+double ECCResultSet::getDoubleValue(int field_index) {
+	if (cursor >= 0 && cursor < row_count && field_index < field_count) {
+		double dv = 0.0f;
+		if (rows[cursor][field_index].compare(NULL_VALUE) == 0)
+			return 0.0f;
+		dv = atof(rows[cursor][field_index].c_str());
+		return dv;
+	} else {
+		throw ECCDBException(exceptionMessage(field_index));
+	}
+}
+
+double ECCResultSet::getDoubleValue(string field_name) {
+	return getDoubleValue(nameToIndex(field_name));
+}
+
+BYTE* ECCResultSet::getBytesValue(int field_index) {
+	if (cursor >= 0 && cursor < row_count && field_index < field_count) {
+		return (BYTE*) rows[cursor][field_index].data();
+	} else {
+		throw ECCDBException(exceptionMessage(field_index));
+	}
+}
+
+BYTE* ECCResultSet::getBytesValue(string field_name) {
+	return getBytesValue(nameToIndex(field_name));
+}
+
+string ECCResultSet::getStringValue(int field_index) {
+	if (cursor >= 0 && cursor < row_count && field_index < field_count)
+		return rows[cursor][field_index];
+	else {
+		throw ECCDBException(exceptionMessage(field_index));
+	}
+}
+
+string ECCResultSet::getStringValue(string field_name) {
+	return getStringValue(nameToIndex(field_name));
+}
+
+bool ECCResultSet::getBoolValue(int field_index) {
+	if (cursor >= 0 && cursor < row_count && field_index < field_count) {
+		string str = rows[cursor][field_index];
+		if (str.empty() || str == "0" || stringToUpper(str) == "FALSE" || str.compare(NULL_VALUE) == 0)
+			return false;
+		else
+			return true;
+	} else {
+		throw ECCDBException(exceptionMessage(field_index));
+	}
+}
+
+bool ECCResultSet::getBoolValue(string field_name) {
+	return getBoolValue(nameToIndex(field_name));
+}
+
+ECCResultSet::ECCResultSet() {
+	field_count = 0;
+	row_count = 0;
+	fields = NULL;
+	rows = NULL;
+	cursor = -1;
+}
+
+ECCResultSet::~ECCResultSet() {
+	for (int i = 0; i < row_count; i++)
+		if (rows[i]) {
+			delete[] rows[i];
+			rows[i] = NULL;
+		}
+
+	free(rows);
+
+	delete[] fields;
+	row_count = 0;
+	rows = 0;
+	fields = 0;
+}
+
+ECCDB::ECCDB(const ECCDB & db)
+{
+	_hostName = db._hostName;
+	_port = db._port;
+	_userName = db._userName;
+	_passWord = db._passWord;
+	_dbName  = db._dbName;
+	_dbtype = db._dbtype;
+	switch(db._dbtype) {
+		case DB_MYSQL:
+			dbi = new MYSQLI(db._hostName,db._port,db._userName,db._passWord,db._dbName);
+			break;
+		default:
+			throw ECCDBException("Unknown DB type!");
+	}
+
+	initAsyncUpdate();
+}
+
+	
+ECCDB::ECCDB(string hostname,unsigned short port,string username,string password,string dbname,string dbtype)
+{
+	_hostName = hostname;
+	_port = port;
+	_userName = username;
+	_passWord = password;
+	_dbName  = dbname;
+	if (dbtype == "MySQL")
+		_dbtype = DB_MYSQL;
+
+	switch (_dbtype) {
+	case DB_MYSQL:
+		dbi = new MYSQLI(hostname,port,username,password,dbname);
+		break;
+	default:
+		throw ECCDBException("Unknown DB type!");
+	}
+	initAsyncUpdate();
+}
+
+void ECCDB::initAsyncUpdate()
+{
+	sqlCount = 0;
+	pthread_mutex_init(&mutex,NULL);
+	pthread_mutex_init(&async_mutex,NULL);
+	pthread_cond_init(&hasAsyncUpdate,NULL);
+	if (pthread_create(&hPollThread, NULL, _asyncProcess, this) != 0) {
+		throw ECCDBException("Create asyncProcess thread failed!");
+	}
+}
+
+ECCDB::~ECCDB() {
+	if (dbi)
+		delete dbi;
+
+	pthread_cancel(hPollThread);
+	pthread_join(hPollThread, NULL);
+}
+
+
+void ECCDB::switchHost(const string & hostName)
+{
+	DBTYPE dtype=_dbtype;
+	
+	if(dbi)  
+		delete dbi;
+	switch (dtype)
+	{
+	case DB_MYSQL:
+		dbi = new MYSQLI(hostName,_port,_userName,_passWord,_dbName);
+		break;
+	}
+	
+}
+void ECCDB::asyncProcess(void *lpCmdLine)
+{
+
+	while (1){
+		pthread_mutex_lock(&async_mutex);
+		 if (sqlQueue.empty()){
+			 pthread_cond_wait(&hasAsyncUpdate,&async_mutex);
+		 }
+		string sqlstr = sqlQueue.front();
+		pthread_mutex_unlock(&async_mutex);
+
+		pthread_mutex_lock(&mutex);
+
+		try{
+			dbi->EXEC_UPDATE(sqlstr);
+		}catch(ECCDBException& dbException)
+		{
+			ERROR("%s",dbException.getExceptionMessage().c_str());
+		}
+		pthread_mutex_unlock(&mutex);
+
+		pthread_mutex_lock(&async_mutex);
+		sqlQueue.pop();
+		sqlCount --;
+		pthread_mutex_unlock(&async_mutex);
+	}
+}
+
+int ECCDB::EXEC_UPDATE(string sqlstr) {
+	int row_count = 0;
+
+	pthread_mutex_lock(&mutex);
+
+	try{
+		row_count = dbi->EXEC_UPDATE(sqlstr);
+	}catch(ECCDBException& dbException)
+	{
+		pthread_mutex_unlock(&mutex);
+		throw dbException;
+	}
+	pthread_mutex_unlock(&mutex);
+
+	return row_count;
+}
+
+bool ECCDB::EXEC_UPDATE_ASYNC(string sqlstr)
+{
+	pthread_mutex_lock(&async_mutex);
+	sqlQueue.push(sqlstr);
+	sqlCount++;
+	pthread_cond_signal(&hasAsyncUpdate);
+	pthread_mutex_unlock(&async_mutex);
+	return true;
+}
+
+ECCResultSet *ECCDB::EXEC_SELECT(string sqlstr) {
+	ECCResultSet *resultset = NULL;
+
+	pthread_mutex_lock(&mutex);
+	try{
+		resultset =  dbi->EXEC_SELECT(sqlstr);
+	}catch(ECCDBException& dbException)
+	{
+		pthread_mutex_unlock(&mutex);
+		throw dbException;
+	}
+
+	pthread_mutex_unlock(&mutex);
+
+	return resultset;
+}
+void ECCDB::freeResultSet() {
+	if (dbi)
+		dbi->freeResultSet();
+}
+bool ECCDB::setAutoCommit(bool autoCommit) {
+	return dbi->setAutoCommit(autoCommit);
+}
+
+int ECCDB::getResultSetCount(){
+	if (dbi)
+		dbi->getResultSetCount();
+}
+
+bool ECCDB::commit(){
+	if(dbi)
+		return dbi->commit();
+	return false;
+}
+bool ECCDB::rollback(){
+	if(dbi)
+		return dbi->rollback();
+	return false;
+}
+
