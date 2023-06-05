@@ -1,0 +1,6 @@
+gcc -o main main.c -std=c99 -lcurl -g
+
+
+/home/limd/work/rk312x-linux-sdk/buildroot/output/rockchip_rk312x/host/bin/arm-buildroot-linux-gnueabihf-gcc -o zkpkey_getUserID_getUnlockKey_Unlock_OK zkpkey_getUserID_getUnlockKey_Unlock_OK.c cJSON.c -g -lcurl -I/home/limd/work/rk312x-linux-sdk/buildroot/output/rockchip_rk312x/build/host-cmake-3.8.2/Utilities/cmcurl/include
+
+

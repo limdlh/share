@@ -1,0 +1,24 @@
+HTTP/1.1 200 OK
+Bdpagetype: 1
+Bdqid: 0xd478a1c1000405c5
+Content-Type: text/html; charset=utf-8
+Date: Thu, 17 Nov 2022 14:51:58 GMT
+P3p: CP=" OTI DSP COR IVA OUR IND COM "
+P3p: CP=" OTI DSP COR IVA OUR IND COM "
+Server: BWS/1.1
+Set-Cookie: BAIDUID=AAE62087DEB0E2069A8526F94C762BB8:FG=1; expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com
+Set-Cookie: BIDUPSID=AAE62087DEB0E2069A8526F94C762BB8; expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com
+Set-Cookie: PSTM=1668696718; expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com
+Set-Cookie: BAIDUID=AAE62087DEB0E206783505D00C83C2E0:FG=1; max-age=31536000; expires=Fri, 17-Nov-23 14:51:58 GMT; domain=.baidu.com; path=/; version=1; comment=bd
+Set-Cookie: BDSVRTM=0; path=/
+Set-Cookie: BD_HOME=1; path=/
+Set-Cookie: H_PS_PSSID=36556_36921_37774_37777_37729_37795_37539_37741_26350_37785; path=/; domain=.baidu.com
+Traceid: 1668696718027751041015310164783547024837
+Vary: Accept-Encoding
+X-Frame-Options: sameorigin
+X-Ua-Compatible: IE=Edge,chrome=1
+Connection: close
+Transfer-Encoding: chunked
+
+b72
+<!DOCTYPE html><!--STATUS OK--><html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta content="always" name="referrer"><meta name="theme-color" content="#ffffff"><meta name="description" content="全球领先的中文搜索引擎、致力于让网民更便捷地获取信息，找到所求。百度超过千亿的中文网页数据库，可以瞬间找到相关的搜索结果。"><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /><link rel="search" type="application/opensearchdescription+xml" href="/content-search.xml" title="百度搜索" /><link rel="icon" sizes="any" mask href="//www.baidu.com/img/baidu_85beaf5496f291521eb75ba38eacbd87.svg"><link rel="dns-prefetch" href="//dss0.bdstatic.com"/><link rel="dns-prefetch" href="//dss1.bdstatic.com"/><link rel="dns-prefetch" 

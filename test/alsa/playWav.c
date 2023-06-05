@@ -90,8 +90,7 @@ int check_wavfile(int fd, HWParams* hw_params)
         return -1;
     }
     printf("format=0x%x, channels=0x%x,sample_fq=%d,byte_p_sec=%d,byte_p_sample=%d,bit_p_sample=%d",
-            fmt->format, fmt->channels,fmt->sample_fq, fmt->byte_p_sec,
-            fmt->byte_p_spl, fmt->bit_p_spl);
+            fmt->format, fmt->channels,fmt->sample_fq, fmt->byte_p_sec, fmt->byte_p_spl, fmt->bit_p_spl);
     //copy params
     hw_params->channels = fmt->channels;
     hw_params->rate = fmt->sample_fq;

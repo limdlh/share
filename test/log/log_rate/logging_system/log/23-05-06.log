@@ -1,0 +1,76 @@
+[I][2023-05-06 15:25:33.8473,log.c:110 initlogfile()] File size: 0 bytes
+[I][2023-05-06 15:25:33.8474,log.c:111 initlogfile()] Time of last access: Sat May  6 15:25:33 2023
+, last modification: Sat May  6 15:25:33 2023
+
+[I][2023-05-06 15:25:33.8474,log.c:344 initlogging()] init logging finished!
+[I][2023-05-06 15:25:33.8474,logtest.c:20 main()] I'm Info
+[W][2023-05-06 15:25:33.8474,logtest.c:21 main()] I'm Warning
+[D][2023-05-06 15:25:33.8474,logtest.c:22 main()] I'm Debug
+[E][2023-05-06 15:25:33.8474,logtest.c:23 main()] I'm Error
+[F][2023-05-06 15:25:33.8474,logtest.c:24 main()] I'm FATAL
+[L][2023-05-06 15:25:33.8474,logtest.c:25 main()] I'm LOG
+[L][2023-05-06 15:25:33.8474,logtest.c:26 main()] I'm Test, length is 22
+[L][2023-05-06 15:25:33.8474,logtest.c:27 main()] I'm LOG
+[D][2023-05-06 15:25:33.8474,logtest.c:28 main()] I'm Debug
+[E][2023-05-06 15:25:33.8474,logtest.c:29 main()] I'm Error
+[L][2023-05-06 15:25:33.8474,logtest.c:30 main()] I'm Test, length is 22 I'm Test, length is 22 I'm Test, length is 22I'm Test, length is 22 I'm Test, length is 22 I'm Test, length is 22
+[L][2023-05-06 15:25:33.8474,logtest.c:31 main()] I'm Test, length is 22
+[L][2023-05-06 15:25:33.8474,logtest.c:32 main()] I'm LOG
+[L][2023-05-06 15:25:33.8474,logtest.c:33 main()] Hello! I'm Test, length is 29
+[I][2023-05-06 15:30:08.5818,log.c:110 initlogfile()] File size: 1305 bytes
+[I][2023-05-06 15:30:08.5818,log.c:111 initlogfile()] Time of last access: Sat May  6 15:25:38 2023
+, last modification: Sat May  6 15:25:38 2023
+
+[I][2023-05-06 15:30:08.5818,log.c:344 initlogging()] init logging finished!
+[I][2023-05-06 15:30:08.5818,logtest.c:20 main()] I'm Info
+[W][2023-05-06 15:30:08.5818,logtest.c:21 main()] I'm Warning
+[D][2023-05-06 15:30:08.5818,logtest.c:22 main()] I'm Debug
+[E][2023-05-06 15:30:08.5818,logtest.c:23 main()] I'm Error
+[F][2023-05-06 15:30:08.5818,logtest.c:24 main()] I'm FATAL
+[L][2023-05-06 15:30:08.5819,logtest.c:25 main()] I'm LOG
+[L][2023-05-06 15:30:08.5819,logtest.c:26 main()] I'm Test, length is 22
+[L][2023-05-06 15:30:08.5819,logtest.c:27 main()] I'm LOG
+[D][2023-05-06 15:30:08.5819,logtest.c:28 main()] I'm Debug
+[E][2023-05-06 15:30:08.5819,logtest.c:29 main()] I'm Error
+[L][2023-05-06 15:30:08.5819,logtest.c:30 main()] I'm Test, length is 22 I'm Test, length is 22 I'm Test, length is 22I'm Test, length is 22 I'm Test, length is 22 I'm Test, length is 22
+[L][2023-05-06 15:30:08.5819,logtest.c:31 main()] I'm Test, length is 22
+[L][2023-05-06 15:30:08.5819,logtest.c:32 main()] I'm LOG
+[L][2023-05-06 15:30:08.5819,logtest.c:33 main()] Hello! I'm Test, length is 29
+[I][2023-05-06 15:30:36.1286,log.c:110 initlogfile()] File size: 2613 bytes
+[I][2023-05-06 15:30:36.1286,log.c:111 initlogfile()] Time of last access: Sat May  6 15:30:29 2023
+, last modification: Sat May  6 15:30:29 2023
+
+[I][2023-05-06 15:30:36.1286,log.c:344 initlogging()] init logging finished!
+[I][2023-05-06 15:30:36.1286,logtest.c:20 main()] I'm Info
+[W][2023-05-06 15:30:36.1286,logtest.c:21 main()] I'm Warning
+[D][2023-05-06 15:30:36.1286,logtest.c:22 main()] I'm Debug
+[E][2023-05-06 15:30:36.1286,logtest.c:23 main()] I'm Error
+[F][2023-05-06 15:30:36.1286,logtest.c:24 main()] I'm FATAL
+[L][2023-05-06 15:30:36.1286,logtest.c:25 main()] I'm LOG
+[L][2023-05-06 15:30:36.1286,logtest.c:26 main()] I'm Test, length is 22
+[L][2023-05-06 15:30:36.1286,logtest.c:27 main()] I'm LOG
+[D][2023-05-06 15:30:36.1286,logtest.c:28 main()] I'm Debug
+[E][2023-05-06 15:30:36.1286,logtest.c:29 main()] I'm Error
+[L][2023-05-06 15:30:36.1286,logtest.c:30 main()] I'm Test, length is 22 I'm Test, length is 22 I'm Test, length is 22I'm Test, length is 22 I'm Test, length is 22 I'm Test, length is 22
+[L][2023-05-06 15:30:36.1287,logtest.c:31 main()] I'm Test, length is 22
+[L][2023-05-06 15:30:36.1287,logtest.c:32 main()] I'm LOG
+[L][2023-05-06 15:30:36.1287,logtest.c:33 main()] Hello! I'm Test, length is 29
+[I][2023-05-06 15:30:36.8560,log.c:110 initlogfile()] File size: 3921 bytes
+[I][2023-05-06 15:30:36.8560,log.c:111 initlogfile()] Time of last access: Sat May  6 15:30:36 2023
+, last modification: Sat May  6 15:30:36 2023
+
+[I][2023-05-06 15:30:36.8560,log.c:344 initlogging()] init logging finished!
+[I][2023-05-06 15:30:36.8560,logtest.c:20 main()] I'm Info
+[W][2023-05-06 15:30:36.8560,logtest.c:21 main()] I'm Warning
+[D][2023-05-06 15:30:36.8560,logtest.c:22 main()] I'm Debug
+[E][2023-05-06 15:30:36.8560,logtest.c:23 main()] I'm Error
+[F][2023-05-06 15:30:36.8560,logtest.c:24 main()] I'm FATAL
+[L][2023-05-06 15:30:36.8560,logtest.c:25 main()] I'm LOG
+[L][2023-05-06 15:30:36.8560,logtest.c:26 main()] I'm Test, length is 22
+[L][2023-05-06 15:30:36.8560,logtest.c:27 main()] I'm LOG
+[D][2023-05-06 15:30:36.8560,logtest.c:28 main()] I'm Debug
+[E][2023-05-06 15:30:36.8560,logtest.c:29 main()] I'm Error
+[L][2023-05-06 15:30:36.8560,logtest.c:30 main()] I'm Test, length is 22 I'm Test, length is 22 I'm Test, length is 22I'm Test, length is 22 I'm Test, length is 22 I'm Test, length is 22
+[L][2023-05-06 15:30:36.8560,logtest.c:31 main()] I'm Test, length is 22
+[L][2023-05-06 15:30:36.8561,logtest.c:32 main()] I'm LOG
+[L][2023-05-06 15:30:36.8561,logtest.c:33 main()] Hello! I'm Test, length is 29

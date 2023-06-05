@@ -1,0 +1,239 @@
+#define _GNU_SOURCE
+
+#include <pthread.h>
+#include <semaphore.h>
+#include <unistd.h>
+#include <sys/syscall.h>
+#include <sched.h>
+
+#include <drm_fourcc.h>
+#include <drm_mode.h>
+#include <xf86drm.h>
+#include <xf86drmMode.h>
+
+#include <sys/time.h>
+#include <unistd.h>
+
+#include "main.h"
+
+#include "libavutil/samplefmt.h"
+#include "libavutil/timestamp.h"
+#include "libavformat/avformat.h"
+#include "libavcodec/avcodec.h"
+#include "libswresample/swresample.h"
+#include "libavutil/imgutils.h"
+
+// using namespace std;
+
+int decodeH264Test()
+{
+
+    printf("ffmpeg decode video\n");
+     struct drm_bo *bo;
+    drm_init(32, 0);
+    bo = malloc_drm_bo(480, 480, DRM_FORMAT_NV12);
+    // // fill buffer bo->ptr
+    // bo->ptr = yuv_Addr;
+    // bo->pitch = yuv_pitch;
+    // bo->w = yuv_width;
+    // bo->h = yuv_height;
+    // setdrmdisp(bo);
+
+    const char* filename = "/oem/SampleVideo_1280x720_5mb.mp4";
+    char* dst_filename = "/userdata/test.yuv";
+    FILE *dst_file = NULL;
+    AVFormatContext *fmt_ctx = NULL;
+    AVCodecContext *codec_ctx = NULL;
+    AVFrame *decoded_frame = NULL;
+    SwrContext *actx = NULL;
+    AVPacket *pPacket = NULL;
+
+    //打开输入文件
+    if (avformat_open_input(&fmt_ctx, filename, NULL, NULL) < 0)
+    {
+        fprintf(stderr, "Could not open source file %s\n", filename);
+        exit(1);
+    }
+    if (avformat_find_stream_info(fmt_ctx, NULL) < 0)
+    {
+        // cout<<"get stream fail"<<endl;
+        printf("get stream fail\n");
+        return -1;
+    }
+    dst_file = fopen(dst_filename, "wb");
+    if (!dst_file)
+    {
+        // cout<<"open test.yuv fail"<<endl;
+        printf("open test.yuv fail\n");
+        return -1;
+    }
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Filename: %s, Line: %d, Func: %s() \n",__FILE__, __LINE__,__func__);
+    //查找视频索引
+    int video_index = -1;
+    video_index = av_find_best_stream(fmt_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
+    if (video_index < 0)
+    {
+        // cout<<"not find video index"<<endl;
+        printf("not find video index\n");
+        return -1;
+    }
+    //打印输入语音文件信息
+    av_dump_format(fmt_ctx, 0, filename, 0);
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Filename: %s, Line: %d, Func: %s() \n",__FILE__, __LINE__,__func__);
+    //查找解码器
+    AVCodec *vCodec = NULL;
+    vCodec = avcodec_find_decoder(fmt_ctx->streams[video_index]->codecpar->codec_id);
+    if (!vCodec)
+    {
+        // cout<<"find video decoder fail"<<endl;
+        printf("find video decoder fail\n");
+        return -1;
+    }
+
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Filename: %s, Line: %d, Func: %s() \n",__FILE__, __LINE__,__func__);
+    //初始化解码器上下文
+    codec_ctx = avcodec_alloc_context3(vCodec);
+    if (!codec_ctx)
+    {
+        // cout<<"init codec_ctx fail"<<endl;
+        printf("init codec_ctx fail\n");
+        return -1;
+    }
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Filename: %s, Line: %d, Func: %s() \n",__FILE__, __LINE__,__func__);
+    int ret = avcodec_parameters_to_context(codec_ctx, fmt_ctx->streams[video_index]->codecpar);
+	printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Filename: %s, Line: %d, Func: %s() \n",__FILE__, __LINE__,__func__);
+    if (ret < 0)
+    {
+        // cout<<"avcodec_parameters_to_contex fail"<<endl;
+        printf("avcodec_parameters_to_contex fail\n");
+        return -1;
+    }
+    //打开解码器
+    ret = avcodec_open2(codec_ctx, vCodec, NULL);
+    if (ret != 0)
+    {
+        // cout<<"avcodec_open2 fail"<<endl;
+        printf("avcodec_open2 fail\n");
+        return -1;
+    }
+
+    pPacket = av_packet_alloc();
+    decoded_frame = av_frame_alloc();
+    if (!decoded_frame)
+    {
+        fprintf(stderr, "Could not allocate frame\n");
+        ret = AVERROR(ENOMEM);
+        return -1;
+    }
+
+    uint8_t *byte_buffer = NULL;
+    int byte_buffer_size = av_image_get_buffer_size(codec_ctx->pix_fmt, codec_ctx->width, codec_ctx->height, 1);
+    // cout << "width=" << codec_ctx->width << " height=" << codec_ctx->height << endl;
+    printf(" width=%d height=%d \n",codec_ctx->width,codec_ctx->height);
+
+    byte_buffer = (uint8_t *)av_malloc(byte_buffer_size);
+    if (!byte_buffer)
+    {
+        av_log(NULL, AV_LOG_ERROR, "allocate buffer fail\n");
+        return AVERROR(ENOMEM);
+    }
+
+    while (1)
+    {
+        ret = av_read_frame(fmt_ctx, pPacket);
+        if (ret != 0)
+        {
+            // cout<<"ret="<<ret<<endl;
+            printf("ret=%d\n", ret);
+            av_packet_unref(pPacket);
+            break;
+        }
+
+        if (ret >= 0 && pPacket->stream_index != video_index)
+        {
+            av_packet_unref(pPacket);
+            continue;
+        }
+
+        // 发送待解码包
+        int len = avcodec_send_packet(codec_ctx, pPacket);
+        if (len < 0)
+        {
+            av_log(NULL, AV_LOG_ERROR, "send packet fail\n");
+            av_packet_unref(pPacket);
+            continue;
+        }
+
+        //接收解码数据
+        while (len >= 0)
+        {
+            len = avcodec_receive_frame(codec_ctx, decoded_frame);
+            if (len == AVERROR_EOF)
+            {
+                break;
+            }
+            else if (len == AVERROR(EAGAIN))
+            {
+                len = 0;
+                break;
+            }
+            else if (len < 0)
+            {
+                av_log(NULL, AV_LOG_ERROR, "Error decoding frame\n");
+                av_frame_unref(decoded_frame);
+                break;
+            }
+
+            int number_of_written_bytes = av_image_copy_to_buffer(byte_buffer,
+                                                                  byte_buffer_size,
+                                                                  (const uint8_t *const *)decoded_frame->data,
+                                                                  (const int *)decoded_frame->linesize,
+                                                                  codec_ctx->pix_fmt,
+                                                                  codec_ctx->width,
+                                                                  codec_ctx->height,
+                                                                  1);
+            if (number_of_written_bytes < 0)
+            {
+                av_log(NULL, AV_LOG_ERROR, "Can't copy image to buffer\n");
+                av_frame_unref(decoded_frame);
+                continue;
+            }
+
+            bo->ptr = byte_buffer;
+            bo->pitch = codec_ctx->width;
+            bo->w = codec_ctx->width;
+            bo->h = codec_ctx->height;
+            setdrmdisp(bo);
+
+            // 写文件保存解码后视频数据
+            fwrite(byte_buffer, number_of_written_bytes, 1, dst_file);
+            fflush(dst_file);
+
+            av_frame_unref(decoded_frame);
+        }
+        av_packet_unref(pPacket);
+    }
+    //释放
+    fclose(dst_file);
+    av_frame_free(&decoded_frame);
+    avcodec_free_context(&codec_ctx);
+    av_packet_free(&pPacket);
+    avformat_close_input(&fmt_ctx);
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+
+    // struct drm_bo *bo;
+    decodeH264Test();
+    for(;;);
+    // drm_init(32, 0);
+    // bo = malloc_drm_bo(480, 480, DRM_FORMAT_NV12);
+    // // fill buffer bo->ptr
+    // bo->ptr = yuv_Addr;
+    // bo->pitch = yuv_pitch;
+    // bo->w = yuv_width;
+    // bo->h = yuv_height;
+    // setdrmdisp(bo);
+}

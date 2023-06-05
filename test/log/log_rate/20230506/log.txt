@@ -1,0 +1,27 @@
+File size:                0 bytes
+Time of last access:Mon Sep  5 22:53:40 2022
+Time of last modification:Mon Sep  5 22:53:40 2022
+
+-----------------------------------------------------------> 
+<2022-09-05 22:53:40.567>[logtest.c:25 main] I'm Info, 
+<2022-09-05 22:53:40.567>[logtest.c:26 main] I'm Warning
+<2022-09-05 22:53:40.567>[logtest.c:27 main] I'm Debug
+<2022-09-05 22:53:40.567>[logtest.c:28 main] I'm Error
+<2022-09-05 22:53:40.567>[logtest.c:29 main] I'm NONE
+File size:                470 bytes
+Time of last access:Mon Sep  5 22:53:44 2022
+Time of last modification:Mon Sep  5 22:53:44 2022
+
+-----------------------------------------------------------> 
+[INFO] <2022-09-05 22:58:08.213>[logtest.c:25 main] I'm Info, 
+[WARN] <2022-09-05 22:58:08.213>[logtest.c:26 main] I'm Warning
+[DEBUG] <2022-09-05 22:58:08.213>[logtest.c:27 main] I'm Debug
+[ERROR] <2022-09-05 22:58:08.213>[logtest.c:28 main] I'm Error
+<2022-09-05 22:58:08.213>[logtest.c:29 main] I'm NONE
+File size:                972 bytes
+Time of last access:Mon Sep  5 22:58:12 2022
+Time of last modification:Mon Sep  5 22:58:12 2022
+
+-----------------------------------------------------------> 
+[ERROR] <2022-09-06 10:50:37.194>[logtest.c:30 main] I'm Error
+[HIGHLIGHT] <2022-09-06 10:50:37.194>[logtest.c:31 main] I'm FATAL
