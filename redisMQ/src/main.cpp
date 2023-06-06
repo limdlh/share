@@ -4,10 +4,19 @@
 
 int main (int argc, char *argv[])
 {
-    INFO("Message queue task start to run >> \n");
+    printf("Message queue task start to run >> \n");
+
+	/*char *p;
+	if(p = getenv("LD_LIBRARY_PATH"))
+		printf("LD_LIBRARY_PATH: %s\n", p);
+	setenv("LD_LIBRARY_PATH", "./libs/", 1);
+	printf("LD_LIBRARY_PATH: %s\n", getenv("LD_LIBRARY_PATH"));
+	unsetenv("LD_LIBRARY_PATH");
+	printf("LD_LIBRARY_PATH: %s\n", getenv("LD_LIBRARY_PATH"));*/
 	
-    if (argc == 2 && strcmp(argv[1], "-d") == 0){
-		daemonize();
+    if (argc == 2 && strcmp(argv[1], "-d") == 0)
+	{
+	    daemonize();
 	}
 	
 	init_logging("./logs/", "redis_zmq.log", "REDIS_ZMQ", 100, 7, 1024 * 1024 * 100);
