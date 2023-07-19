@@ -16,7 +16,7 @@ extern "C"
 #endif
 
 //const char* SRC_FILE = "rtsp://192.168.21.151:554/media/video3";
-const char* SRC_FILE = "./Hard_Sun.mp4";
+const char* SRC_FILE = "/home/limd/work/multi_media/Hard_Sun.mp4";
 #define PIX_FORMAT AV_PIX_FMT_YUV420P
 int main()
 {
