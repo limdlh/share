@@ -3,10 +3,17 @@
 #include "cJSON.h"
 
 //(char(*p3Arr))[2][64] = NULL;
+char* json1 = "{ \"json\" : { \"id\":1, \"nodeId\":11, \"deviceId\":111, \"deviceName\":\"aaa\", \"ieee\":\"01212\", \"ep\":\"1111\", \"type\":\"bbb\" }}";
+    char* json2 = "{\"id\":[1,2,3,4,5], \"nodeId\":11, \"deviceId\":111, \"deviceName\":\"aaa\"}";
+	char* json3 = "{\"topic\":\"/LAPI/V1.0/System/LowPowerState\",\"data\":{\"DeviceName\": \"H000059200400029\",\"ProductKey\": \"a164msJWX5c\",\"State\": 0}}";
+	char* json4 = "{\"success\":true,\"code\":200,\"message\":\"请求成功\",\"localizedMsg\":\"请求成功\"}";
+	char* json5 = "{\"LowPowerState\":{\"time\":1667556963260,\"value\":1}}";
+	char* json6 = "{\"data\":{\"response\":[\"BJKsXmTpX2jw==\"]},\"code\":\"SUCCESS\",\"msg\":\"成功\"}";
+	char* json7 = "{\"success\":true,\"code\":200,\"message\":\"请求成功\",\"localizedMsg\":\"请求成功\",\"data\":[{\"userId\":\"1555436203659993089\",\"deviceName\":\"000D6F00175D15C0\",\"productKey\":\"a1CKFOuptQq\",\"nickName\":\"10A 20\",\"thingType\":\"DEVICE\",\"parentIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"H000057509200342\",\"parentProductKey\":\"a1tNlnarBMz\",\"deviceType\":0,\"gatewayIotId\":\"\"},{\"userId\":\"1555436203659993089\",\"deviceName\":\"b0fd2482eff543418a439641ad978d2a\",\"productKey\":\"a1Sim1SWGvA\",\"nickName\":\"组播5\",\"thingType\":\"VIRTUAL\",\"parentIotId\":\"\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"\",\"parentProductKey\":\"\",\"deviceType\":2,\"gatewayIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\"},{\"userId\":\"1555436203659993089\",\"deviceName\":\"d35b4875eafa49acbb23b413a5f110c8\",\"productKey\":\"a1Sim1SWGvA\",\"nickName\":\"组播11\",\"thingType\":\"VIRTUAL\",\"parentIotId\":\"\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"\",\"parentProductKey\":\"\",\"deviceType\":2,\"gatewayIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\"},{\"userId\":\"1555436203659993089\",\"deviceName\":\"ee9b77373012439c9f949bbfbf5fd614\",\"productKey\":\"a1Sim1SWGvA\",\"nickName\":\"组播8\",\"thingType\":\"VIRTUAL\",\"parentIotId\":\"\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"\",\"parentProductKey\":\"\",\"deviceType\":2,\"gatewayIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\"}]}";
+	char* json8 = "{\"items\": [         {             \"gunid\": 1,             \"type\": 3,             \"volmax\": \"222\",             \"volmin\": \"222\",             \"curmax\": \"22\",             \"tempmax\": 65535,             \"meterenable\": 255,             \"jueyuanenbale\": 255,             \"plcenable\": 255,             \"gonglvmax\": \"22\",             \"stafenable\": 255,             \"waittime\": 255,             \"retrycnt\": 255,             \"jiayuchongenable\": 0,             \"guntemppolicytype\": 0,             \"gunsafepower\": 0,             \"coolerenable\": \"0\"         },         {             \"gunid\": 2,             \"type\": 255,             \"volmax\": 65535,             \"volmin\": 65535,             \"curmax\": 65535,             \"tempmax\": 65535,             \"meterenable\": 255,             \"jueyuanenbale\": 255,             \"plcenable\": 255,             \"gonglvmax\": 65535,             \"stafenable\": 255,             \"waittime\": 255,             \"retrycnt\": 255         }     ],     \"action\": \"setgun\",     \"token\": \"287477BC059B63038DA83EA980FD5D56A85367F4ADAA929DE12E2AAC6823FDD6546889381126BBC694A3459C208E9857\" }";
 
 void parseJson(char* all[][2][64])
 {
-	char* json7 = "{\"success\":true,\"code\":200,\"message\":\"请求成功\",\"localizedMsg\":\"请求成功\",\"data\":[{\"userId\":\"1555436203659993089\",\"deviceName\":\"000D6F00175D15C0\",\"productKey\":\"a1CKFOuptQq\",\"nickName\":\"10A 20\",\"thingType\":\"DEVICE\",\"parentIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"H000057509200342\",\"parentProductKey\":\"a1tNlnarBMz\",\"deviceType\":0,\"gatewayIotId\":\"\"},{\"userId\":\"1555436203659993089\",\"deviceName\":\"b0fd2482eff543418a439641ad978d2a\",\"productKey\":\"a1Sim1SWGvA\",\"nickName\":\"组播5\",\"thingType\":\"VIRTUAL\",\"parentIotId\":\"\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"\",\"parentProductKey\":\"\",\"deviceType\":2,\"gatewayIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\"},{\"userId\":\"1555436203659993089\",\"deviceName\":\"d35b4875eafa49acbb23b413a5f110c8\",\"productKey\":\"a1Sim1SWGvA\",\"nickName\":\"组播11\",\"thingType\":\"VIRTUAL\",\"parentIotId\":\"\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"\",\"parentProductKey\":\"\",\"deviceType\":2,\"gatewayIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\"},{\"userId\":\"1555436203659993089\",\"deviceName\":\"ee9b77373012439c9f949bbfbf5fd614\",\"productKey\":\"a1Sim1SWGvA\",\"nickName\":\"组播8\",\"thingType\":\"VIRTUAL\",\"parentIotId\":\"\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"\",\"parentProductKey\":\"\",\"deviceType\":2,\"gatewayIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\"}]}";
     cJSON* root;
     int value_int;
 
@@ -50,13 +57,7 @@ void parseJson(char* all[][2][64])
 
 
 int main() {
-    char* json1 = "{ \"json\" : { \"id\":1, \"nodeId\":11, \"deviceId\":111, \"deviceName\":\"aaa\", \"ieee\":\"01212\", \"ep\":\"1111\", \"type\":\"bbb\" }}";
-    char* json2 = "{\"id\":[1,2,3,4,5], \"nodeId\":11, \"deviceId\":111, \"deviceName\":\"aaa\"}";
-	char* json3 = "{\"topic\":\"/LAPI/V1.0/System/LowPowerState\",\"data\":{\"DeviceName\": \"H000059200400029\",\"ProductKey\": \"a164msJWX5c\",\"State\": 0}}";
-	char* json4 = "{\"success\":true,\"code\":200,\"message\":\"请求成功\",\"localizedMsg\":\"请求成功\"}";
-	char* json5 = "{\"LowPowerState\":{\"time\":1667556963260,\"value\":1}}";
-	char* json6 = "{\"data\":{\"response\":[\"BJKsXmTpX2jw==\"]},\"code\":\"SUCCESS\",\"msg\":\"成功\"}";
-	char* json7 = "{\"success\":true,\"code\":200,\"message\":\"请求成功\",\"localizedMsg\":\"请求成功\",\"data\":[{\"userId\":\"1555436203659993089\",\"deviceName\":\"000D6F00175D15C0\",\"productKey\":\"a1CKFOuptQq\",\"nickName\":\"10A 20\",\"thingType\":\"DEVICE\",\"parentIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"H000057509200342\",\"parentProductKey\":\"a1tNlnarBMz\",\"deviceType\":0,\"gatewayIotId\":\"\"},{\"userId\":\"1555436203659993089\",\"deviceName\":\"b0fd2482eff543418a439641ad978d2a\",\"productKey\":\"a1Sim1SWGvA\",\"nickName\":\"组播5\",\"thingType\":\"VIRTUAL\",\"parentIotId\":\"\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"\",\"parentProductKey\":\"\",\"deviceType\":2,\"gatewayIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\"},{\"userId\":\"1555436203659993089\",\"deviceName\":\"d35b4875eafa49acbb23b413a5f110c8\",\"productKey\":\"a1Sim1SWGvA\",\"nickName\":\"组播11\",\"thingType\":\"VIRTUAL\",\"parentIotId\":\"\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"\",\"parentProductKey\":\"\",\"deviceType\":2,\"gatewayIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\"},{\"userId\":\"1555436203659993089\",\"deviceName\":\"ee9b77373012439c9f949bbfbf5fd614\",\"productKey\":\"a1Sim1SWGvA\",\"nickName\":\"组播8\",\"thingType\":\"VIRTUAL\",\"parentIotId\":\"\",\"privateData\":\"\",\"phone\":\"18658827506\",\"roomName\":\"\",\"homeId\":\"1555436203659993089\",\"homeName\":\"18658827506的家\",\"parentDeviceName\":\"\",\"parentProductKey\":\"\",\"deviceType\":2,\"gatewayIotId\":\"yqoE8teeOlfR0PuY9Wf8000000\"}]}";
+    
     cJSON* root;
     cJSON* format;
     cJSON* array;
@@ -156,39 +157,31 @@ int main() {
 		}
 	}
 
-    //解析json7，包括嵌套JSON
-	/*printf("-------------------->> json7: %s\n", json7);
-	root = cJSON_Parse(json7);
-	cJSON* data_Json = cJSON_GetObjectItem(root, "data");//获取数组的根节点
+    //解析json8，包括嵌套JSON
+	printf("-------------------->> json8: %s\n", json8);
+	root = cJSON_Parse(json8);
+	cJSON* data_Json = cJSON_GetObjectItem(root, "items");//获取数组的根节点
 	cJSON *array_sub, *node_id_json;
 	value_int = cJSON_GetArraySize(data_Json);//获取数组长度
     printf("数组长度为:%d\n", value_int);
-	char all[value_int][2][30];
     for (int i = 0; i < value_int; i++) {//循环打印数组的内容
-		array_sub = cJSON_GetArrayItem(data_Json,i);
+		array_sub = cJSON_GetArrayItem(data_Json, i);
 		if(array_sub == NULL)
 		{	
 			continue;	
 		}
-		if((node_id_json= cJSON_GetObjectItem(array_sub,"deviceName")) != NULL)
+		if((node_id_json= cJSON_GetObjectItem(array_sub,"gunid")) != NULL)
 		{
-			strcpy(all[i][0], node_id_json->valuestring);
-			printf("deviceName: %s\t", node_id_json->valuestring);
+			printf("gunid: %d\t", node_id_json->valueint);
 		}
-		if((node_id_json= cJSON_GetObjectItem(array_sub,"productKey")) != NULL)
+		if((node_id_json= cJSON_GetObjectItem(array_sub,"volmin")) != NULL)
 		{
-			strcpy(all[i][1], node_id_json->valuestring);
-			printf("productKey: %s\n", node_id_json->valuestring);
+			printf("volmin: %s\n", node_id_json->valuestring);
 		}
     }
 	printf("-----------------------------\n");
-	for (int i = 0; i < value_int; i++)
-	{
-		printf("deviceName: %s\t", all[i][0]);
-		printf("productKey: %s\n", all[i][1]);
-	}*/
 	
-	char(*p)[2][64] = NULL;
+	/*char(*p)[2][64] = NULL;
 	parseJson(p);
 	printf("-----------------------------\n");
 	if(p == NULL)
@@ -197,10 +190,10 @@ int main() {
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		printf("deviceName: %s\t", p[i][0]);
-		printf("productKey: %s\n", p[i][1]);
+		//printf("deviceName: %s\t", p[i][0]);
+		//printf("productKey: %s\n", p[i][1]);
 	}
-	free(p);
+	free(p);*/
 	
     cJSON_Delete(root);
 

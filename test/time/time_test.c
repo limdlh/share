@@ -12,6 +12,7 @@ int main(){
     printf("microsecond:%ld\n",tv.tv_sec*1000000 + tv.tv_usec);  //微秒
  
     sleep(3); // 为方便观看，让程序睡三秒后对比
+    //usleep(100 * 1000);
     printf("3s later:");
  
     gettimeofday(&tv,NULL);

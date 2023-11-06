@@ -1,8 +1,8 @@
 /*
 strcasecmp.c
 */
-#include<strings.h>
-#include<stdio.h>
+#include <strings.h>
+#include <stdio.h>
 
 int main()
 {

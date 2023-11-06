@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
- 
+
+#define MAINTENANCE_PATH              "/ubi/conf/cgi-bin/maintenance/"
+#define MAINTENANCE_SERVERINFO              MAINTENANCE_PATH "ServerInfo.config"
+
 #define likely(x)    __builtin_expect(!!(x), 1)
 #define unlikely(x)  __builtin_expect(!!(x), 0)
  
@@ -19,6 +22,8 @@ int main(int argc, char *argv[])
     }
  
     printf("%d\n", a);
- 
+	printf("MAINTENANCE_PATH: %s\n", MAINTENANCE_PATH);
+    printf("MAINTENANCE_SERVERINFO: %s\n", MAINTENANCE_SERVERINFO);
+
     return 0;
 }
